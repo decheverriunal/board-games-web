@@ -1,6 +1,6 @@
 "use client"
 
-import './Square.css';
+import './Board.css';
 
 export default function Board({board, onPlay}: {
     board: string[][];
