@@ -1,6 +1,10 @@
 class GameLogic {
     constructor() {}
 
+    cloneBoard(board: string[][]) {
+        return [...board];
+    }
+
     isMoveLegal(board: string[][], player: string, i: number, j: number) {
         if (board[i][j] === " ") {
             return true;

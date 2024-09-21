@@ -38,6 +38,7 @@ export default function Game() {
         }
         setMove(0);
         setBoard(nextBoard);
+        setPlayerToPlay("W");
     }
 
     // Realiza la jugada en el tablero, toma fila y columna como argumentos
