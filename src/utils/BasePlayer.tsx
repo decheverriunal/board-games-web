@@ -1,14 +1,14 @@
 import GameLogic from "@/components/gameLogic";
 
 class MinimaxNode {
-    logic: any;
+    logic: GameLogic;
     board: string[][];
     score: number;
-    moves: object[];
+    moves: MinimaxNode[];
     player: string;
     bestNode: any;
-    lastMove: any;
-    constructor(board: string[][], player: string, lastMove: any) {
+    lastMove: number[];
+    constructor(board: string[][], player: string, lastMove: number[]) {
         this.logic = new GameLogic();
         this.board = board;
         this.score = this.staticEval(board,player);
@@ -20,7 +20,133 @@ class MinimaxNode {
 
     staticEval(board: string[][], player: string){
         let evalScore = 0;
-        
+        let longestLineWhite = 0;
+        let longestLineBlack = 0;
+        let lineLength = 0;
+        let n = 0;
+        for (let i = 0; i < board.length; i++) {
+            for (let j = 0; j < board[0].length; j++) {
+                if (board[i][j] === "W") {
+                    lineLength = 1;
+                    n = 1;
+                    while (i+n < board.length && j+n < board[0].length && board[i+n][j+n] === "W") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    n = 1;
+                    while (i-n > -1 && j-n > -1 && board[i-n][j-n] === "W") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    if (lineLength > longestLineWhite) longestLineWhite = lineLength;
+
+                    lineLength = 1;
+                    n = 1;
+                    while (i+n < board.length && j-n > -1 && board[i+n][j-n] === "W") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    n = 1;
+                    while (i-n > -1 && j+n < board[0].length && board[i-n][j+n] === "W") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    if (lineLength > longestLineWhite) longestLineWhite = lineLength;
+
+                    lineLength = 1;
+                    n = 1;
+                    while (i+n < board.length && board[i+n][j] === "W") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    n = 1;
+                    while (i-n > -1 && board[i-n][j] === "W") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    if (lineLength > longestLineWhite) longestLineWhite = lineLength;
+
+                    lineLength = 1;
+                    n = 1;
+                    while (j-n > -1 && board[i][j-n] === "W") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    n = 1;
+                    while (j+n < board[0].length && board[i][j+n] === "W") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    if (lineLength > longestLineWhite) longestLineWhite = lineLength;
+                } else if (board[i][j] === "B") {
+                    lineLength = 1;
+                    n = 1;
+                    while (i+n < board.length && j+n < board[0].length && board[i+n][j+n] === "B") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    n = 1;
+                    while (i-n > -1 && j-n > -1 && board[i-n][j-n] === "B") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    if (lineLength > longestLineBlack) longestLineBlack = lineLength;
+
+                    lineLength = 1;
+                    n = 1;
+                    while (i+n < board.length && j-n > -1 && board[i+n][j-n] === "B") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    n = 1;
+                    while (i-n > -1 && j+n < board[0].length && board[i-n][j+n] === "B") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    if (lineLength > longestLineBlack) longestLineBlack = lineLength;
+
+                    lineLength = 1;
+                    n = 1;
+                    while (i+n < board.length && board[i+n][j] === "B") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    n = 1;
+                    while (i-n > -1 && board[i-n][j] === "B") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    if (lineLength > longestLineBlack) longestLineBlack = lineLength;
+
+                    lineLength = 1;
+                    n = 1;
+                    while (j-n > -1 && board[i][j-n] === "B") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    n = 1;
+                    while (j+n < board[0].length && board[i][j+n] === "B") {
+                        lineLength += 1;
+                        n += 1;
+                    }
+                    if (lineLength > longestLineBlack) longestLineBlack = lineLength;
+                }
+            }
+        }
+        if (longestLineWhite > 4) {
+            evalScore = 1000;
+        } else if (longestLineBlack > 4) {
+            evalScore = -1000;
+        } else if (longestLineWhite === 4 && player === "W") {
+            evalScore = 800;
+        } else if (longestLineBlack === 4 && player === "B") {
+            evalScore = -800;
+        } else if (longestLineWhite === 3 && player === "W") {
+            evalScore = 400;
+        } else if (longestLineBlack === 3 && player === "B") {
+            evalScore = -400;
+        }
+
         return evalScore;
     }
 
@@ -29,8 +155,8 @@ class MinimaxNode {
         let newBoard;
         let addNode;
         for (const move of allMoves) {
-            newBoard = this.logic.clone(this.board);
-            this.logic.makeMove(newBoard, move[0], move[1], this.player);
+            newBoard = this.logic.cloneBoard(this.board);
+            this.logic.makeMove(newBoard, this.player, move[0], move[1]);
             addNode = new MinimaxNode(newBoard, this.player === "B" ? "W" : "B", move)
             this.moves.push(addNode);
             //console.log(addNode);
@@ -42,11 +168,11 @@ class MinimaxNode {
         
     }
 
-    orderConditionWhite(A: object, B: object) {
+    orderConditionWhite(A: MinimaxNode, B: MinimaxNode) {
         return B.score - A.score;
     }
 
-    orderConditionBlack(A: object, B: object) {
+    orderConditionBlack(A: MinimaxNode, B: MinimaxNode) {
         return A.score - B.score;
     }
 }
@@ -54,7 +180,7 @@ class MinimaxNode {
 class BasePlayer {
     head: any;
     start: boolean;
-    logic: any;
+    logic: GameLogic;
     color: string;
     time: number;
     constructor(color: string, time: number) {
@@ -68,13 +194,13 @@ class BasePlayer {
     compute(board: string[][], _time: never) {
         //if start of game make first move
         if (this.start && this.color === "W") {
-            this.head = new MinimaxNode(board, "W", null);
+            this.head = new MinimaxNode(board, "W", []);
             this.head.fillChildNodesScores();
             this.head = this.head.bestNode;
             this.start = false;
             return this.head.lastMove;
         } else if (this.start && this.color === "B") {
-            this.head = new MinimaxNode(board, "B", null);
+            this.head = new MinimaxNode(board, "B", []);
             this.head.fillChildNodesScores();
             this.head = this.head.bestNode;
             this.start = false;
@@ -89,7 +215,7 @@ class BasePlayer {
             const j = elem.lastMove[1];
             if (board[i][j] != " ") {
                 if (detectedMove != null) {
-                    this.head = new MinimaxNode(board, this.color, null);
+                    this.head = new MinimaxNode(board, this.color, []);
                     this.head.fillChildNodesScores();
                     this.head = this.head.bestNode;
                     return this.head.lastMove;
@@ -104,7 +230,7 @@ class BasePlayer {
             return this.head.lastMove;
         }
         //if opponent cant move
-        this.head = new MinimaxNode(board, this.color, null);
+        this.head = new MinimaxNode(board, this.color, []);
 
         this.head.fillChildNodesScores();
         this.head = this.head.bestNode;
