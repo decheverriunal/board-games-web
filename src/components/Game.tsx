@@ -19,7 +19,7 @@ export default function Game() {
 
     const [playerToPlay, setPlayerToPlay] = useState("W");
 
-    const logic = new GameLogic();
+    const [logic, setLogic] = useState(new GameLogic());
     
     // Variables para almacenar un tablero y una fila de un tablero respectivamente,
     // para usar en funciones
