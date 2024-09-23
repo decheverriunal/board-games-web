@@ -2,7 +2,7 @@
 
 import Menu from "./Menu";
 import Board from "./Board";
-import GameLogic from "./gameLogic";
+import GameLogic from "../utils/gameLogic";
 import { useState } from 'react';
 
 export default function Game() {

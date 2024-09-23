@@ -1,4 +1,4 @@
-import GameLogic from "@/components/gameLogic";
+import GameLogic from "./gameLogic";
 
 class MinimaxNode {
     logic: GameLogic;
@@ -177,21 +177,19 @@ class MinimaxNode {
     }
 }
 
-class BasePlayer {
+class BasicPlayer {
     head: any;
     start: boolean;
     logic: GameLogic;
     color: string;
-    time: number;
-    constructor(color: string, time: number) {
+    constructor(color: string) {
         this.color = color;
-        this.time = time;
         this.logic = new GameLogic();
         this.head = null;
         this.start = true;
     }
 
-    compute(board: string[][], _time: never) {
+    compute(board: string[][], toPlay: string) {
         //if start of game make first move
         if (this.start && this.color === "W") {
             this.head = new MinimaxNode(board, "W", []);
@@ -239,4 +237,4 @@ class BasePlayer {
 
 }
 
-export default BasePlayer;
+export default BasicPlayer;
