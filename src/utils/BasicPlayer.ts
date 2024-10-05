@@ -151,12 +151,12 @@ class MinimaxNode {
     }
 
     fillChildNodesScores(){
-        const allMoves = this.logic.getLegalMoves(this.board, this.player);
+        const allMoves = GameLogic.getLegalMoves(this.board, this.player);
         let newBoard;
         let addNode;
         for (const move of allMoves) {
-            newBoard = this.logic.cloneBoard(this.board);
-            this.logic.makeMove(newBoard, this.player, move[0], move[1]);
+            newBoard = GameLogic.cloneBoard(this.board);
+            GameLogic.makeMove(newBoard, this.player, move[0], move[1]);
             addNode = new MinimaxNode(newBoard, this.player === "B" ? "W" : "B", move)
             this.moves.push(addNode);
             //console.log(addNode);
@@ -191,14 +191,8 @@ class BasicPlayer {
 
     compute(board: string[][], toPlay: string) {
         //if start of game make first move
-        if (this.start && this.color === "W") {
-            this.head = new MinimaxNode(board, "W", []);
-            this.head.fillChildNodesScores();
-            this.head = this.head.bestNode;
-            this.start = false;
-            return this.head.lastMove;
-        } else if (this.start && this.color === "B") {
-            this.head = new MinimaxNode(board, "B", []);
+        if (this.start) {
+            this.head = new MinimaxNode(board, toPlay, []);
             this.head.fillChildNodesScores();
             this.head = this.head.bestNode;
             this.start = false;
@@ -213,7 +207,7 @@ class BasicPlayer {
             const j = elem.lastMove[1];
             if (board[i][j] != " ") {
                 if (detectedMove != null) {
-                    this.head = new MinimaxNode(board, this.color, []);
+                    this.head = new MinimaxNode(board, toPlay, []);
                     this.head.fillChildNodesScores();
                     this.head = this.head.bestNode;
                     return this.head.lastMove;
@@ -228,7 +222,7 @@ class BasicPlayer {
             return this.head.lastMove;
         }
         //if opponent cant move
-        this.head = new MinimaxNode(board, this.color, []);
+        this.head = new MinimaxNode(board, toPlay, []);
 
         this.head.fillChildNodesScores();
         this.head = this.head.bestNode;

@@ -1,4 +1,4 @@
-class GameLogic {
+export default class GameLogic {
 
     toPlay: string;
     board: string[][];
@@ -9,11 +9,11 @@ class GameLogic {
         this.board = [];
     }
 
-    cloneBoard(board: string[][]) {
+    static cloneBoard(board: string[][]) {
         return [...board];
     }
 
-    isMoveLegal(board: string[][], player: string, i: number, j: number) {
+    static isMoveLegal(board: string[][], player: string, i: number, j: number) {
         if (board[i][j] === " ") {
             return true;
         } else {
@@ -21,7 +21,7 @@ class GameLogic {
         }
     }
 
-    getLegalMoves(board: string[][], player: string) {
+    static getLegalMoves(board: string[][], player: string) {
         const moves = [];
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[0].length; j++)
@@ -30,7 +30,7 @@ class GameLogic {
         return moves;
     }
 
-    canMove(board: string[][], player: string) {
+    static canMove(board: string[][], player: string) {
         for (let i = 0; i < board.length; i++) {
             for (let j = 0; j < board[0].length; j++)
                 if (this.isMoveLegal(board, player, i, j)) return true;
@@ -38,7 +38,7 @@ class GameLogic {
         return false;
     }
 
-    makeMove(board: string[][], player: string, i: number, j: number) {
+    static makeMove(board: string[][], player: string, i: number, j: number) {
         const nextBoard = board.slice();
         if (player === "W") {
             nextBoard[i][j] = "W";
@@ -48,7 +48,7 @@ class GameLogic {
         return nextBoard;
     }
 
-    getWinner(board: string[][]) {
+    static getWinner(board: string[][]) {
         let lineLength = 0;
         let n = 0;
         let piece = "";
@@ -110,41 +110,10 @@ class GameLogic {
                 }
             }
         }
-        if (!this.canMove(this.board, "W")) {
+        if (!this.canMove(board, "W")) {
             return "tie";
         } else {
             return "ongoing";
         }
     }
-
-    async playGame(player1: unknown | "human", player2: unknown | "human", board: string[][], toPlay: string) {
-        this.board = this.cloneBoard(board);
-        this.toPlay = toPlay;
-        this.player1 = player1;
-        this.player2 = player2;
-        let move = [0,0];
-        while (this.getWinner(this.board) === "ongoing") {
-            if (this.toPlay === "W") {
-                if (this.player1 === "human") {
-                    move = await getHumanMove();
-                    this.board = this.makeMove(this.board, this.toPlay, move[0], move[1]);
-                } else {
-                    move = await this.player1.compute(this.board, this.toPlay); 
-                    this.board = this.makeMove(this.board, this.toPlay, move[0], move[1]);
-                }
-                this.toPlay = "B";
-            } else {
-                if (this.player2 === "human") {
-                    move = await getHumanMove();
-                    this.board = this.makeMove(this.board, this.toPlay, move[0], move[1]);
-                } else {
-                    move = await this.player2.compute(this.board, this.toPlay); 
-                    this.board = this.makeMove(this.board, this.toPlay, move[0], move[1]);
-                }
-                this.toPlay = "W";
-            }
-        }
-    }
 }
-
-export default GameLogic;
