@@ -1,61 +1,61 @@
 import GameLogic from "./gameLogic";
+import RandomPlayer from "./RandomPlayer";
 
-let matchBoard;
-let matchToPlay;
-let matchPlayer1;
-let matchPlayer2;
-let move = [0,0];
-let humanToMove = false;
-let matchLogic;
 
-async function playGame(player1: unknown | "human", player2: unknown | "human", board: string[][], toPlay: string) {
-    matchBoard = GameLogic.cloneBoard(board);
-    matchToPlay = toPlay;
-    matchPlayer1 = player1;
-    matchPlayer2 = player2;
-    move = [0,0];
-    while (GameLogic.getWinner(matchBoard) === "ongoing") {
-        if (matchToPlay === "W") {
-            if (matchPlayer1 === "human") {
-                move = await getHumanMove();
-                matchBoard = GameLogic.makeMove(matchBoard, matchToPlay, move[0], move[1]);
-            } else {
-                move = await matchPlayer1.compute(matchBoard, matchToPlay); 
-                matchBoard = GameLogic.makeMove(matchBoard, matchToPlay, move[0], move[1]);
-            }
-            matchToPlay = "B";
+
+export const match = {
+    board: [[""]],
+    playerW: "nothuman",
+    playerB: "nothuman",
+    toPlay: "W",
+    humanToPlay: false
+}
+
+export function makeEmptyBoard(row: number, col: number, playerW: string, playerB: string) {
+    match.playerW = playerW;
+    match.playerB = playerB;
+    match.board = [];
+    const boardRow = [];
+    for (let i = 0 ; i < col; i++) {
+        boardRow.push(" ");
+    }
+    for (let i = 0; i < row; i++) {
+        match.board.push([...boardRow]);
+    }
+    match.toPlay = "W";
+    match.humanToPlay = (match.playerW === "human");
+}
+
+export function makePlay(row: number,col: number) {
+    if (GameLogic.isMoveLegal(match.board,match.toPlay,row,col) && GameLogic.getWinner(match.board) === "ongoing") {
+        match.board = GameLogic.makeMove(match.board,match.toPlay,row,col);
+        if (match.toPlay === "W") {
+            match.toPlay = "B";
+            match.humanToPlay = (match.playerB === "human");
         } else {
-            if (matchPlayer2 === "human") {
-                move = await getHumanMove();
-                matchBoard = GameLogic.makeMove(matchBoard, matchToPlay, move[0], move[1]);
-            } else {
-                move = await matchPlayer2.compute(matchBoard, matchToPlay); 
-                matchBoard = GameLogic.makeMove(matchBoard, matchToPlay, move[0], move[1]);
-            }
-            matchToPlay = "W";
+            match.toPlay = "W";
+            match.humanToPlay = (match.playerW === "human");
         }
     }
 }
 
-async function getHumanMove() {
-    while (humanToMove) {
-
+export function machineMove() {
+    while (!match.humanToPlay && GameLogic.getWinner(match.board) === "ongoing") {
+        const toMove = RandomPlayer.compute(match.board, match.toPlay);
+        makePlay(toMove[0],toMove[1]);
     }
-    return move;
 }
 
-function getHumanToMove() {
-    return humanToMove;
+export function playerMove(row: number,col: number) {
+    if (match.humanToPlay && GameLogic.getWinner(match.board) === "ongoing") {
+        makePlay(row,col);
+    }
 }
 
-function setHumanToMoveFalse() {
-    humanToMove = false;
+export function getBoard() {
+    return match.board;
 }
 
-function getMove() {
-    return move;
-}
-
-function setMove(i: number, j: number) {
-    move = [i, j];
+export function getHumanToPlay() {
+    return match.humanToPlay
 }

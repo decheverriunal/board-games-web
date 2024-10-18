@@ -2,15 +2,9 @@
 
 import Menu from "./Menu";
 import Board from "./Board";
-import GameLogic from "../utils/gameLogic";
-import RandomPlayer from "@/utils/RandomPlayer";
-//import { getMove, setMove, getHumanToMove, setHumanToMoveFalse, playGame } from "../utils/matchLogic";
-import { useState } from 'react';
-
-let humanToPlay = true;
-let playerToPlay = "W";
-
-let currentBoard = [[" "," "],[" "," "]];
+import { match, makeEmptyBoard, makePlay, getHumanToPlay } from "../utils/matchLogic";
+import { useEffect, useState } from 'react';
+import GameLogic from "@/utils/gameLogic";
 
 export default function Game() {
 
@@ -19,92 +13,50 @@ export default function Game() {
     const [col, setCol] = useState(2);
 
     // Tablero
-    const [board, setBoard] = useState(currentBoard);
-
-    // # del movimiento actual
-    const [move, setMove] = useState(0);
+    const [board, setBoard] = useState(match.board);
 
     // Un jugador puede ser humano o maquina
     const [playerW, setPlayerW] = useState("human");
     const [playerB, setPlayerB] = useState("human");
-    //const [humanToPlay, setHumanToPlay] = useState(true);
 
-    //const [playerToPlay, setPlayerToPlay] = useState("W");
-
-    // useEffect(() => {
-    //     if (playerToPlay === "W") {
-    //         setHumanToPlay(playerW === "human");
-    //     } else {
-    //         setHumanToPlay(playerB === "human");
-    //     }
-    // },[playerToPlay]);
-    
-    // Variables para almacenar un tablero y una fila de un tablero respectivamente,
-    // para usar en funciones
-    let nextBoard;
-    let boardRow;
+    useEffect(() => {
+        if (!match.humanToPlay && GameLogic.getWinner(match.board) === "ongoing") {
+            fetch("http://localhost:3001/compute",{
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    board: match.board,
+                    toPlay: match.toPlay
+                })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                makePlay(data[0],data[1]);
+                setBoard(match.board);
+            })
+        }
+    }, [board]);
 
     // Inicializa el tablero con los valores de col y row elegidos
-    function makeEmptyBoard() {
-        nextBoard = [];
-        boardRow = [];
-        for (let i = 0 ; i < col; i++) {
-            boardRow.push(" ");
-        }
-        for (let i = 0; i < row; i++) {
-            nextBoard.push([...boardRow]);
-        }
-        setMove(0);
-        currentBoard = nextBoard;
-        setBoard(currentBoard);
-        playerToPlay = "W";
-        humanToPlay = (playerW === "human");
-        if (playerW !== "human" && playerB !== "human") {
-            console.log("a")
-            makeBotsMatch();
-        } else if (!humanToPlay) {
-            const toMove = RandomPlayer.compute(board, playerToPlay);
-            console.log("e")
-            makePlay(toMove[0],toMove[1]);
-        } else {
-            console.log("i")
-        }
+    function setNewMatch() {
+        makeEmptyBoard(row,col,playerW,playerB);
+        setBoard(match.board);
     }
 
-    // Realiza la jugada en el tablero, toma fila y columna como argumentos
-    function makePlay(row: number,col: number) {
-        if (GameLogic.isMoveLegal(board,playerToPlay,row,col)) {
-            currentBoard = GameLogic.makeMove(board,playerToPlay,row,col);
-            setBoard(currentBoard);
-            if (playerToPlay === "W") {
-                playerToPlay = "B";
-                humanToPlay = (playerB === "human");
-            } else {
-                playerToPlay = "W";
-                humanToPlay = (playerW === "human");
-            }
-            setMove(move + 1);
-            if (!humanToPlay) {
-                const toMove = RandomPlayer.compute(board, playerToPlay);
-                makePlay(toMove[0],toMove[1]);
-            }
-        }
-    }
-
-    function makeBotsMatch() {
-        let toMove;
-        while (GameLogic.getWinner(board) === "ongoing") {
-            toMove = RandomPlayer.compute(board, playerToPlay);
-            makePlay(toMove[0],toMove[1]);
-        }
+    function playMove(row: number,col: number) {
+        makePlay(row, col);
+        setBoard(match.board);
+        //console.log(board)
     }
 
     return <>
         <div>
-            <Menu changeRow={setRow} changeCol={setCol} setNewBoard={makeEmptyBoard} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
+            <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
         </div>
         <div>
-            <Board board={board} onPlay={makePlay} isHumanPlaying={humanToPlay} />
+            <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
         </div>
     </>
 }
