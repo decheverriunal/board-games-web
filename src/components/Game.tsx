@@ -48,7 +48,6 @@ export default function Game() {
     function playMove(row: number,col: number) {
         makePlay(row, col);
         setBoard(match.board);
-        //console.log(board)
     }
 
     return <>

@@ -1,7 +1,4 @@
 import GameLogic from "./gameLogic";
-import RandomPlayer from "./RandomPlayer";
-
-
 
 export const match = {
     board: [[""]],
@@ -37,23 +34,6 @@ export function makePlay(row: number,col: number) {
             match.humanToPlay = (match.playerW === "human");
         }
     }
-}
-
-export function machineMove() {
-    while (!match.humanToPlay && GameLogic.getWinner(match.board) === "ongoing") {
-        const toMove = RandomPlayer.compute(match.board, match.toPlay);
-        makePlay(toMove[0],toMove[1]);
-    }
-}
-
-export function playerMove(row: number,col: number) {
-    if (match.humanToPlay && GameLogic.getWinner(match.board) === "ongoing") {
-        makePlay(row,col);
-    }
-}
-
-export function getBoard() {
-    return match.board;
 }
 
 export function getHumanToPlay() {
