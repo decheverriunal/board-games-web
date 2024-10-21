@@ -5,6 +5,7 @@ import Board from "./Board";
 import { match, makeEmptyBoard, makePlay, getHumanToPlay } from "../utils/matchLogic";
 import { useEffect, useState } from 'react';
 import GameLogic from "@/utils/gameLogic";
+import "./Game.css";
 
 export default function Game() {
 
@@ -50,12 +51,8 @@ export default function Game() {
         setBoard(match.board);
     }
 
-    return <>
-        <div>
-            <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
-        </div>
-        <div>
-            <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
-        </div>
-    </>
+    return <div className="game-div">
+        <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
+        <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
+    </div>
 }

@@ -1,0 +1,44 @@
+.menu {
+    width: max(200px,20%);
+    height: 100vh;
+    float: left;
+    box-shadow: 1px 0px 10px 1px;
+}
+
+.num-input {
+    width: 10%;
+    margin-left: min(10px,3%);
+    border-radius: 10px;
+}
+
+.num-label {
+    margin-left: min(10px,3%);
+}
+
+.player-label {
+    display:inline-block;
+    margin: 5%;
+    padding-left: 5%;
+    text-align: left;
+    width: 100%;
+}
+
+#dims-label {
+    display:inline-block;
+    margin: 5%;
+    text-align: center;
+    width: 90%;
+}
+
+.player-type-input {
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    border-radius: 10px;
+}
+
+#make-board {
+    width: 100px;
+    margin: 10px auto;
+    display: block;
+}

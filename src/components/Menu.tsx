@@ -1,5 +1,7 @@
 "use client"
 
+import "./Menu.css"
+
 export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, setPlayer2 }:{
     changeRow: (num: number) => void;
     changeCol: (num: number) => void;
@@ -24,36 +26,44 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
         setPlayer2(e.target.value);
     }
 
-    return <>
-        <label>Dimensiones del tablero</label>
+    return <div className="menu">
+        <label id="dims-label">Board dimensions</label>
+        <label className="num-label">Rows</label>
         <input
-            type="number"
+            type="text"
+            inputMode="numeric"
+            className="num-input"
             id="row" 
             name="row"
             onChange={handleRowChange}
         />
+        <label className="num-label">Columns</label>
         <input
-            type="number"
+            type="text"
+            inputMode="numeric"
+            className="num-input"
             id="col" 
             name="col"
             onChange={handleColChange}
         />
-        <label>Jugador 1</label>
+        <label className="player-label">Player 1</label>
         <input
             type="text"
+            className="player-type-input"
             id="player1" 
             name="player1"
             onChange={handlePlayer1Change}
         />
-        <label>Jugador 2</label>
+        <label className="player-label">Player 2</label>
         <input
             type="text"
+            className="player-type-input"
             id="player2" 
             name="player2"
             onChange={handlePlayer2Change}
         />
-        <button onClick={setNewBoard}>
-            Nuevo tablero
+        <button id="make-board" onClick={setNewBoard}>
+            New board
         </button>
-    </>
+    </div>
 }

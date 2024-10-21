@@ -29,7 +29,13 @@ function Square({color, cols, onSquareClick}: {
     cols: number;
     onSquareClick: () => void
 }) {
-    return <div className="square" style={{ width: `min(100px,calc(60vw/${cols}))`, height: `min(100px,calc(60vw/${cols}))` }} onClick={onSquareClick}>
+    return <div 
+            className="square" 
+            style={{ 
+                width: `min(80px,calc(60vw/${cols}))`, 
+                height: `min(80px,calc(60vw/${cols}))` 
+            }} 
+            onClick={onSquareClick}>
         <div className={"piece" + color}>
 
         </div>
