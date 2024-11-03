@@ -10,7 +10,7 @@ export default function Board({board, onPlay, isHumanPlaying}: {
 
     const state = board.map((value,index) => {
         const row = value.map((val,ind) => {
-            return <Square color={val} key={ind} cols={value.length} onSquareClick={() => {
+            return <Square color={val} key={ind} cols={Math.max(value.length,board.length)} onSquareClick={() => {
                 if (isHumanPlaying() && board[index][ind] === " ") onPlay(index,ind)
             }} />
         })
@@ -19,7 +19,10 @@ export default function Board({board, onPlay, isHumanPlaying}: {
         </div>
     })
 
-    return <div className='board'>
+    return <div className='board' style={{ 
+        width: `min(60vw,90vh)`,
+        height: `calc(min(60vw,90vh)*${board.length}/${Math.max(board[0].length,board.length)})`
+    }} >
         {state}
     </div>
 }
@@ -32,8 +35,8 @@ function Square({color, cols, onSquareClick}: {
     return <div 
             className="square" 
             style={{ 
-                width: `min(80px,calc(60vw/${cols}))`, 
-                height: `min(80px,calc(60vw/${cols}))` 
+                width: `min(80px,calc(60vw/${cols}),calc(90vh/${cols}))`, 
+                height: `min(80px,calc(60vw/${cols}),calc(90vh/${cols}))` 
             }} 
             onClick={onSquareClick}>
         <div className={"piece" + color}>

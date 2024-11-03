@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react";
 import "./Menu.css"
 
 export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, setPlayer2 }:{
@@ -9,6 +10,12 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
     setPlayer1: (player: string) => void;
     setPlayer2: (player: string) => void;
 }) {
+
+    const [hide, setHide] = useState(false);
+
+    function hideMenu() {
+        setHide(!hide)
+    }
 
     function handleRowChange(e: React.ChangeEvent<HTMLInputElement>) {
         changeRow(parseInt(e.target.value));
@@ -26,7 +33,9 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
         setPlayer2(e.target.value);
     }
 
-    return <div className="menu">
+    return <>
+    <button className={hide ? "display-button button-show" : "display-button"} onClick={hideMenu}>{hide ? ">" : "<"}</button>
+    <div className={hide ? "menu hidden-menu" : "menu"}>
         <label id="dims-label">Board dimensions</label>
         <label className="num-label">Rows</label>
         <input
@@ -66,4 +75,5 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
             New board
         </button>
     </div>
+    </>
 }
