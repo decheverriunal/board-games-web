@@ -1,3 +1,17 @@
 .game-div {
     display: flex;
+    height: 100vh;
+}
+
+.board-div {
+    display: inline-block;
+    margin: 5%;
+    position: relative;
+    width: 70%;
+}
+
+@media only screen and (max-width: 1000px) {
+    .board-div {
+        margin-left: calc(2% + 200px);
+    }
 }

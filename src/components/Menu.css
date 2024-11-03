@@ -1,6 +1,7 @@
 .menu {
     width: max(200px,20%);
     height: 100vh;
+    position: relative;
     float: left;
     box-shadow: 1px 0px 10px 1px;
 }
@@ -41,4 +42,11 @@
     width: 100px;
     margin: 10px auto;
     display: block;
+}
+
+@media only screen and (max-width: 1000px) {
+    .menu {
+        width: 200px;
+        position: absolute;
+    }
 }

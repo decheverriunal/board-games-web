@@ -3,7 +3,7 @@
     width: 70%;
     margin: auto;
     display: flex;
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0);
     border-radius: 100%;
 }
 
@@ -12,7 +12,8 @@
     width: 70%;
     margin: auto;
     display: flex;
-    background-color:bisque;
+    background-color:rgb(255, 255, 255);
+    border: 1px solid rgb(195, 195, 195);
     border-radius: 100%;
 }
 
@@ -22,6 +23,7 @@
     margin: auto;
     display: flex;
     background-color:black;
+    border: 1px solid rgb(80, 80, 80);
     border-radius: 100%;
 }
 
@@ -29,19 +31,32 @@
     width: 100px;
     height: 100px;
     border: 2px;
-    border: 1px solid black;
     display: inline-flex;
     position: relative;
+    background-color:rgb(204, 166, 83);
 }
 
 .board-row {
-    display: flex;
-    margin: auto;
+    display: inline-flex;
+    margin: 0px;
+    justify-content: center;
 }
 
 .board {
-    display: grid;
-    width: 80%;
-    height: 80%;
-    margin: 25px auto;
+    width: 70vw;
+    height: 70vw;
+    margin: auto;
+    overflow: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.board-row:nth-child(odd) > .square:nth-child(even) {
+    background-color:rgb(244, 226, 188);
+}
+
+.board-row:nth-child(even) > .square:nth-child(odd) {
+    background-color:rgb(244, 226, 188);
 }

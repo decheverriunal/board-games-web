@@ -53,6 +53,8 @@ export default function Game() {
 
     return <div className="game-div">
         <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
-        <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
+        <div className="board-div">
+            <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
+        </div>
     </div>
 }
