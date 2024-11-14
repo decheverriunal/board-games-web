@@ -1,6 +1,7 @@
 .game-div {
     display: flex;
     height: 100vh;
+    background-color: rgb(109, 217, 134);
 }
 
 .board-div {
@@ -12,12 +13,13 @@
     height:fit-content;
     overflow: auto;
     overflow-x: hidden;
-    background-color: azure;
+    background-color: rgb(214, 255, 224);
+    border-radius: 2%;
 }
 
 @media only screen and (max-width: 1000px) {
     .board-div {
         margin: 10% auto;
-        z-index: -10;
+        z-index: 1;
     }
 }

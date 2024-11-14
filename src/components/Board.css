@@ -33,7 +33,9 @@
     border: 2px;
     display: inline-flex;
     position: relative;
-    background-color:rgb(204, 166, 83);
+    background-color:rgb(212, 212, 212);
+    background-image: linear-gradient(to right, rgba(255,255,255,0) 0 42%, rgba(30,30,30,1) 42% 58%, rgba(255,255,255,0) 58% 100%),
+    linear-gradient(to top, rgba(255,255,255,0) 0 42%, rgba(30,30,30,1) 42% 58%, rgba(255,255,255,0) 58% 100%);
 }
 
 .board-row {
@@ -51,12 +53,31 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    border-radius: 2%;
 }
 
-.board-row:nth-child(odd) > .square:nth-child(even) {
+.board-row:nth-child(odd) > .square-chess:nth-child(even) {
+    background-color:rgb(204, 166, 83);
+}
+
+.board-row:nth-child(even) > .square-chess:nth-child(odd) {
+    background-color:rgb(204, 166, 83);
+}
+
+.square-chess {
     background-color:rgb(244, 226, 188);
 }
 
-.board-row:nth-child(even) > .square:nth-child(odd) {
-    background-color:rgb(244, 226, 188);
+@media only screen and (max-width: 1000px) {
+    .square {
+        background-image: linear-gradient(to right, rgba(255,255,255,0) 0 40%, rgba(30,30,30,1) 40% 60%, rgba(255,255,255,0) 60% 100%),
+        linear-gradient(to top, rgba(255,255,255,0) 0 40%, rgba(30,30,30,1) 40% 60%, rgba(255,255,255,0) 60% 100%);
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .square {
+        background-image: linear-gradient(to right, rgba(255,255,255,0) 0 35%, rgba(0,0,0,1) 35% 65%, rgba(255,255,255,0) 65% 100%),
+        linear-gradient(to top, rgba(255,255,255,0) 0 35%, rgba(30,30,30,1) 35% 65%, rgba(255,255,255,0) 65% 100%);
+    }
 }
