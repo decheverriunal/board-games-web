@@ -4,12 +4,17 @@
     background-color: rgb(109, 217, 134);
 }
 
-.board-div {
-    display: inline-block;
-    margin: 5%;
-    margin-bottom: 0%;
+.game-info-div {
     position: relative;
     width: 70%;
+    height:fit-content;
+}
+
+.board-div {
+    display: inline-block;
+    margin: 0% 5% 0% 5%;
+    position: relative;
+    width: 90%;
     height:fit-content;
     overflow: auto;
     overflow-x: hidden;
@@ -17,7 +22,20 @@
     border-radius: 2%;
 }
 
+.winner-div {
+    margin: 2%;
+    height: 1em;
+    line-height: 100%;
+    text-align: center;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+}
 @media only screen and (max-width: 1000px) {
+    .game-info-div {
+        margin: 0% auto;
+    }
+
     .board-div {
         margin: 10% auto;
         z-index: 1;

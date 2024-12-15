@@ -5,7 +5,7 @@ export const match = {
     playerW: "nothuman",
     playerB: "nothuman",
     toPlay: "W",
-    humanToPlay: false
+    humanToPlay: true
 }
 
 export function makeEmptyBoard(row: number, col: number, playerW: string, playerB: string) {
