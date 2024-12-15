@@ -46,7 +46,7 @@
 
 .board {
     width: 70vw;
-    height: 70vw;
+    height: fit-content;
     margin: auto;
     overflow: auto;
     position: relative;

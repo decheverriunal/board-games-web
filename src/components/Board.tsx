@@ -20,8 +20,8 @@ export default function Board({board, onPlay, isHumanPlaying}: {
     })
 
     return <div className='board' style={{ 
-        width: `min(60vw,90vh)`,
-        height: `calc(min(60vw,90vh)*${board.length}/${Math.max(board[0].length,board.length)})`
+        width: `min(60vw,90vh)`
+        //height: `calc(min(60vw,90vh)*${board.length}/${Math.max(board[0].length,board.length)})`
     }} >
         {state}
     </div>
@@ -32,7 +32,7 @@ function Square({color, cols, onSquareClick}: {
     cols: number;
     onSquareClick: () => void
 }) {
-    let squareType = (cols <= 10) ? "bg-square" : "sm-square";
+    const squareType = (cols <= 10) ? "bg-square" : "sm-square";
 
     return <div 
             className={"square" + " " + squareType}
