@@ -32,8 +32,10 @@ function Square({color, cols, onSquareClick}: {
     cols: number;
     onSquareClick: () => void
 }) {
+    let squareType = (cols <= 10) ? "bg-square" : "sm-square";
+
     return <div 
-            className="square" 
+            className={"square" + " " + squareType}
             style={{ 
                 width: `min(80px,calc(60vw/${cols}),calc(90vh/${cols}))`, 
                 height: `min(80px,calc(60vw/${cols}),calc(90vh/${cols}))` 
