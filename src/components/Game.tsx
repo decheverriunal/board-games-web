@@ -23,6 +23,10 @@ export default function Game() {
     // Estado de la partida actual
     const [matchState, setMatchState] = useState("ongoing");
 
+    // Tiempo de cada jugador
+    const [timeW, setTimeW] = useState(0.0);
+    const [timeB, setTimeB] = useState(0.0);
+
     useEffect(() => {
         if (!match.humanToPlay && matchState === "ongoing") {
             fetch("http://localhost:3001/compute",{
@@ -72,7 +76,11 @@ export default function Game() {
     return <div className="game-div">
         <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
         <div className="game-info-div">
-            <h1 className="winner-div">{displayWinner()}</h1>
+            <div className="info-div">
+                <h1 className="info">{timeW}</h1>
+                <h1 className="info">{displayWinner()}</h1>
+                <h1 className="info">{timeB}</h1>
+            </div>
             <div className="board-div">
                 <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
             </div>
