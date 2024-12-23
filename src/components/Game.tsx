@@ -2,6 +2,7 @@
 
 import Menu from "./Menu";
 import Board from "./Board";
+import GameInfo from "./GameInfo";
 import { match, makeEmptyBoard, makePlay, getHumanToPlay } from "../utils/matchLogic";
 import { useEffect, useState } from 'react';
 import GameLogic from "@/utils/gameLogic";
@@ -21,7 +22,7 @@ export default function Game() {
     const [playerB, setPlayerB] = useState("human");
 
     // Estado de la partida actual
-    const [matchState, setMatchState] = useState("ongoing");
+    const [matchState, setMatchState] = useState("");
 
     // Tiempo de cada jugador
     const [timeW, setTimeW] = useState(0.0);
@@ -50,6 +51,8 @@ export default function Game() {
 
     // Inicializa el tablero con los valores de col y row elegidos
     function setNewMatch() {
+        setTimeW(0);
+        setTimeB(0);
         makeEmptyBoard(row,col,playerW,playerB);
         setMatchState(GameLogic.getWinner(match.board));
         setBoard(match.board);
@@ -61,26 +64,10 @@ export default function Game() {
         setBoard(match.board);
     }
 
-    function displayWinner() {
-        if (matchState === "W") {
-            return "White wins!"
-        } else if (matchState === "B") {
-            return "Black wins!"
-        } else if (matchState === "tie") {
-            return "Tie!"
-        } else {
-            return ""
-        }
-    }
-
     return <div className="game-div">
         <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
         <div className="game-info-div">
-            <div className="info-div">
-                <h1 className="info">{timeW}</h1>
-                <h1 className="info">{displayWinner()}</h1>
-                <h1 className="info">{timeB}</h1>
-            </div>
+            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeW} setTimeB={setTimeB} matchState={matchState} toPlay={match.toPlay}/>
             <div className="board-div">
                 <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
             </div>
