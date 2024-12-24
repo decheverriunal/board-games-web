@@ -24,6 +24,9 @@ export default function Game() {
     // Estado de la partida actual
     const [matchState, setMatchState] = useState("");
 
+    // Numero de movimientos que lleva la partida
+    const [moveNumber, setMoveNumber] = useState(0);
+
     // Tiempo de cada jugador
     const [timeW, setTimeW] = useState(0.0);
     const [timeB, setTimeB] = useState(0.0);
@@ -44,6 +47,7 @@ export default function Game() {
             .then((data) => {
                 makePlay(data[0],data[1]);
                 setMatchState(GameLogic.getWinner(match.board));
+                setMoveNumber(m => m+1);
                 setBoard(match.board);
             })
         }
@@ -55,19 +59,21 @@ export default function Game() {
         setTimeB(0);
         makeEmptyBoard(row,col,playerW,playerB);
         setMatchState(GameLogic.getWinner(match.board));
+        setMoveNumber(0);
         setBoard(match.board);
     }
 
     function playMove(row: number,col: number) {
         makePlay(row, col);
         setMatchState(GameLogic.getWinner(match.board));
+        setMoveNumber(m => m+1);
         setBoard(match.board);
     }
 
     return <div className="game-div">
         <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
         <div className="game-info-div">
-            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeW} setTimeB={setTimeB} matchState={matchState} toPlay={match.toPlay}/>
+            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeW} setTimeB={setTimeB} matchState={matchState} toPlay={match.toPlay} moveNumber={moveNumber}/>
             <div className="board-div">
                 <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
             </div>
