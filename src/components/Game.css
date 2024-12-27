@@ -23,8 +23,7 @@
 }
 
 .info-div {
-    margin: 2%;
-    height: 1em;
+    margin: 0% 7% 0% 7%;
     line-height: 100%;
     text-align: center;
     color: #ffffff;
@@ -36,7 +35,30 @@
 .info {
     display: inline;
     position: relative;
-    margin: auto;
+    text-align: center;
+    width: 28%;
+    margin: 1px;
+    padding: 0.5em;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.info-winner {
+    background-color: rgba(0, 100, 0, 0.8);
+    padding: 0.5em 0 0.5em 0;
+    font-size: 1.75em;
+    width: 34%;
+}
+
+.info-white {
+    width: 5%;
+    margin: 2px;
+    background-color: white;
+}
+
+.info-black {
+    width: 5%;
+    margin: 2px;
+    background-color: black;
 }
 
 @media only screen and (max-width: 1000px) {
@@ -45,7 +67,57 @@
     }
 
     .board-div {
-        margin: 10% auto;
         z-index: 1;
+    }
+
+    .info {
+        font-size: 1.75em;
+    }
+
+    .info-winner {
+        font-size: 1.25em;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .info {
+        font-size: 1.5em;
+    }
+    .info-winner {
+        font-size: 1.1em;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    .info {
+        font-size: 1.25em;
+    }
+    .info-winner {
+        font-size: 1em;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .info {
+        font-size: 1em;
+    }
+    .info-winner {
+        font-size: 0.85em;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .info {
+        font-size: 0.75em;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .info {
+        font-size: 0.6em;
+    }
+
+    .info-winner {
+        font-size: 0.55em;
     }
 }

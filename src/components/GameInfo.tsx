@@ -72,9 +72,11 @@ export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState,toPla
     }
 
     return <div className="info-div">
+        <div className='info-white'></div>
         <h1 className="info">{displayTime(timeW)}</h1>
-        <h1 className="info">{displayWinner()}</h1>
+        <h1 className="info info-winner">{displayWinner()}</h1>
         <h1 className="info">{displayTime(timeB)}</h1>
+        <div className='info-black'></div>
     </div>
 
 }
