@@ -14,7 +14,7 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
 
     const [hide, setHide] = useState(false);
     const [isCustomTime, setIsCustomTime] = useState(false);
-    const customTime = useRef(0);
+    const customTime = useRef(60);
 
     function hideMenu() {
         setHide(!hide)

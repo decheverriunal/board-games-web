@@ -43,7 +43,8 @@ export default function Game() {
                 },
                 body: JSON.stringify({
                     board: match.board,
-                    toPlay: match.toPlay
+                    toPlay: match.toPlay,
+                    time: time
                 })
             })
             .then((response) => response.json())

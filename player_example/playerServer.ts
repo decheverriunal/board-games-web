@@ -9,7 +9,7 @@ app.use(json())
 
 app.post('/compute',(req,res) => {
     res.status(200);
-    const move = RandomPlayer.compute(req.body.board,req.body.toPlay);
+    const move = RandomPlayer.compute(req.body.board,req.body.toPlay,req.body.time);
     res.send(move);
 })
 

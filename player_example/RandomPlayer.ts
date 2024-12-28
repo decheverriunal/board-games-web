@@ -6,11 +6,11 @@ export default class RandomPlayer {
     constructor() {
     }
 
-    static compute(board: string[][], toPlay: string) {
+    static compute(board: string[][], toPlay: string, time: number) {
         for (let i = 0; i < 10000000; i++) {
             
         }
-        //console.log(n);
+        console.log(time);
         const availableMoves = GameLogic.getLegalMoves(board,toPlay);
         return availableMoves[Math.floor(Math.random()*availableMoves.length)];
     }
