@@ -58,6 +58,7 @@
 .time-input {
     margin-left: 10%;
     margin-right: 10%;
+    margin-top: 10px;
     width: 80%;
     border-radius: 10px;
 }
@@ -69,7 +70,7 @@
 }
 
 .display-button {
-    background-color: rgb(4, 185, 119); /* Green */
+    background-color: rgb(4, 185, 119);
     border: none;
     color: white;
     font-weight:bold;

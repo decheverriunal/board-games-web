@@ -28,11 +28,11 @@ export default function Game() {
     const [moveNumber, setMoveNumber] = useState(0);
 
     // Tiempo de cada jugador
-    const [timeW, setTimeW] = useState(0.0);
-    const [timeB, setTimeB] = useState(0.0);
+    const [timeW, setTimeW] = useState(0);
+    const [timeB, setTimeB] = useState(0);
 
     // Tiempo inicial de cada jugador
-    const [time, setTime] = useState(0.0);
+    const [time, setTime] = useState(60000);
 
     useEffect(() => {
         if (!match.humanToPlay && matchState === "ongoing") {
