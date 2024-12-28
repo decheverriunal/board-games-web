@@ -3,12 +3,13 @@
 import { useState } from "react";
 import "./Menu.css"
 
-export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, setPlayer2 }:{
+export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, setPlayer2, setTime }:{
     changeRow: (num: number) => void;
     changeCol: (num: number) => void;
     setNewBoard: () => void;
     setPlayer1: (player: string) => void;
     setPlayer2: (player: string) => void;
+    setTime: (time: number) => void;
 }) {
 
     const [hide, setHide] = useState(false);
@@ -31,6 +32,10 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
 
     function handlePlayer2Change(e: React.ChangeEvent<HTMLInputElement>) {
         setPlayer2(e.target.value);
+    }
+
+    function handleTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
+        setTime(parseInt(e.target.value));
     }
 
     return <>
@@ -70,6 +75,14 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
             id="player2" 
             name="player2"
             onChange={handlePlayer2Change}
+        />
+        <label className="time-label">Time {"(miliseconds)"}</label>
+        <input
+            type="text"
+            className="time-input"
+            id="time" 
+            name="time"
+            onChange={handleTimeChange}
         />
         <button id="make-board" onClick={setNewBoard}>
             New board

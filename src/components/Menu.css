@@ -47,6 +47,21 @@
     border-radius: 10px;
 }
 
+.time-label {
+    display:inline-block;
+    margin: 5%;
+    padding-left: 5%;
+    text-align: left;
+    width: 100%;
+}
+
+.time-input {
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+    border-radius: 10px;
+}
+
 #make-board {
     width: 100px;
     margin: 10px auto;

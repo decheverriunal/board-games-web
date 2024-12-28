@@ -20,21 +20,21 @@ export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState,toPla
         const timer = setInterval(() => {
             if (matchState === "ongoing" && moveNumber > 1 && toPlay === "W") {
                 if (toPlay === playing.current) {
-                    setTimeW(new Date().getTime() - timeStart.current + timeAccumulatedW.current);
+                    setTimeW(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
                 } else {
                     timeStart.current = new Date().getTime();
                     timeAccumulatedW.current = timeW;
                     playing.current = toPlay;
-                    setTimeW(new Date().getTime() - timeStart.current + timeAccumulatedW.current);
+                    setTimeW(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
                 }
             } else if (matchState === "ongoing" && moveNumber > 1 && toPlay === "B") {
                 if (toPlay === playing.current) {
-                    setTimeB(new Date().getTime() - timeStart.current + timeAccumulatedB.current);
+                    setTimeB(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
                 } else {
                     timeStart.current = new Date().getTime();
                     timeAccumulatedB.current = timeB;
                     playing.current = toPlay;
-                    setTimeB(new Date().getTime() - timeStart.current + timeAccumulatedB.current);
+                    setTimeB(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
                 }
             } else if (moveNumber === 1) {
                 playing.current = toPlay;
@@ -61,10 +61,15 @@ export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState,toPla
     }
 
     function displayTime(time: number) {
-        const decimal = Math.floor((time / 100) % 10)
+        let decimal;
+        if (time < 1000) {
+            decimal = Math.ceil(time / 10)
+        } else {
+            decimal = Math.round(time / 100) % 10
+        }
         const seconds = Math.floor((time / 1000) % 60)
-        const minutes = Math.floor((time / 100000) % 60)
-        const hours = Math.floor((time / 10000000))
+        const minutes = Math.floor((time / 60000) % 60)
+        const hours = Math.floor((time / 3600000))
         const h = (hours < 10) ? "0" + hours : hours;
         const min = (minutes < 10) ? "0" + minutes : minutes;
         const sec = (seconds < 10) ? "0" + seconds : seconds;

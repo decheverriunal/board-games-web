@@ -31,6 +31,9 @@ export default function Game() {
     const [timeW, setTimeW] = useState(0.0);
     const [timeB, setTimeB] = useState(0.0);
 
+    // Tiempo inicial de cada jugador
+    const [time, setTime] = useState(0.0);
+
     useEffect(() => {
         if (!match.humanToPlay && matchState === "ongoing") {
             fetch("http://localhost:3001/compute",{
@@ -55,8 +58,8 @@ export default function Game() {
 
     // Inicializa el tablero con los valores de col y row elegidos
     function setNewMatch() {
-        setTimeW(0);
-        setTimeB(0);
+        setTimeW(time);
+        setTimeB(time);
         makeEmptyBoard(row,col,playerW,playerB);
         setMatchState(GameLogic.getWinner(match.board));
         setMoveNumber(0);
@@ -64,16 +67,32 @@ export default function Game() {
     }
 
     function playMove(row: number,col: number) {
-        makePlay(row, col);
-        setMatchState(GameLogic.getWinner(match.board));
-        setMoveNumber(m => m+1);
-        setBoard(match.board);
+        if (matchState === "ongoing") {
+            makePlay(row, col);
+            setMatchState(GameLogic.getWinner(match.board));
+            setMoveNumber(m => m+1);
+            setBoard(match.board);
+        }
+    }
+
+    function setTimeWhite(time: number) {
+        if (time <= 0) {
+            setMatchState("B")
+        }
+        setTimeW(Math.max(0,time));
+    }
+
+    function setTimeBlack(time: number) {
+        if (time <= 0) {
+            setMatchState("W")
+        }
+        setTimeB(Math.max(0,time));
     }
 
     return <div className="game-div">
-        <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
+        <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB} setTime={setTime}/>
         <div className="game-info-div">
-            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeW} setTimeB={setTimeB} matchState={matchState} toPlay={match.toPlay} moveNumber={moveNumber}/>
+            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeWhite} setTimeB={setTimeBlack} matchState={matchState} toPlay={match.toPlay} moveNumber={moveNumber}/>
             <div className="board-div">
                 <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
             </div>
