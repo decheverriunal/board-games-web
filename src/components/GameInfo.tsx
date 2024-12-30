@@ -3,13 +3,12 @@
 import { useEffect, useRef } from 'react';
 import { match } from "../utils/matchLogic";
 
-export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState,toPlay}:{
+export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState}:{
     timeW: number;
     timeB: number;
     setTimeW: (num: number) => void;
     setTimeB: (num: number) => void;
     matchState: string;
-    toPlay: string;
 }) {
     const timeStart = useRef(0);
     const timeAccumulatedW = useRef(0);
@@ -18,26 +17,26 @@ export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState,toPla
 
     useEffect(() => {
         const timer = setInterval(() => {
-            if (matchState === "ongoing" && match.moveNumber > 1 && toPlay === "W") {
-                if (toPlay === playing.current) {
+            if (matchState === "ongoing" && match.moveNumber > 1 && match.toPlay === "W") {
+                if (match.toPlay === playing.current) {
                     setTimeW(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
                 } else {
                     timeStart.current = new Date().getTime();
                     timeAccumulatedW.current = timeW;
-                    playing.current = toPlay;
+                    playing.current = match.toPlay;
                     setTimeW(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
                 }
-            } else if (matchState === "ongoing" && match.moveNumber > 1 && toPlay === "B") {
-                if (toPlay === playing.current) {
+            } else if (matchState === "ongoing" && match.moveNumber > 1 && match.toPlay === "B") {
+                if (match.toPlay === playing.current) {
                     setTimeB(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
                 } else {
                     timeStart.current = new Date().getTime();
                     timeAccumulatedB.current = timeB;
-                    playing.current = toPlay;
+                    playing.current = match.toPlay;
                     setTimeB(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
                 }
             } else if (match.moveNumber === 1) {
-                playing.current = toPlay;
+                playing.current = match.toPlay;
             } else {
                 timeAccumulatedW.current = 0
                 timeAccumulatedB.current = 0
@@ -46,7 +45,7 @@ export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState,toPla
         }, 100);
 
         return () => clearInterval(timer);
-    }, [matchState, setTimeB, setTimeW, timeB, timeW, toPlay])
+    }, [matchState, setTimeB, setTimeW, timeB, timeW])
 
     function displayWinner() {
         if (matchState === "W") {
@@ -62,7 +61,7 @@ export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState,toPla
 
     function displayTime(time: number) {
         let decimal;
-        if (time < 1000) {
+        if (time < 900) {
             decimal = Math.ceil(time / 10)
         } else {
             decimal = Math.round(time / 100) % 10

@@ -3,13 +3,10 @@
 import Menu from "./Menu";
 import Board from "./Board";
 import GameInfo from "./GameInfo";
-import { match, newMatchParams, makeEmptyBoard, makePlay, getHumanToPlay } from "../utils/matchLogic";
+import { match, newMatchParams, makeEmptyBoard, makePlay } from "../utils/matchLogic";
 import { useEffect, useState } from 'react';
 import GameLogic from "@/utils/gameLogic";
 import "./Game.css";
-
-let timeWhite = 0;
-let timeBlack = 0;
 
 export default function Game() {
 
@@ -37,14 +34,14 @@ export default function Game() {
                 body: JSON.stringify({
                     board: match.board,
                     toPlay: match.toPlay,
-                    time: match.toPlay === "W" ? timeWhite : timeBlack
+                    time: match.toPlay === "W" ? match.timeWhite : match.timeBlack
                 })
             })
             .then((response) => response.json())
             .then((data) => {
-                console.log(timeWhite)
-                console.log(timeBlack)
-                if (matchState === "ongoing" && timeWhite > 0 && timeBlack > 0) {
+                console.log(match.timeWhite)
+                console.log(match.timeBlack)
+                if (matchState === "ongoing" && match.timeWhite > 0 && match.timeBlack > 0 && !match.humanToPlay) {
                     makePlay(data[0],data[1]);
                     setMatchState(GameLogic.getWinner(match.board));
                     setBoard(match.board);
@@ -56,9 +53,9 @@ export default function Game() {
     // Inicializa el tablero con los valores de col y row elegidos
     function setNewMatch() {
         setTimeW(newMatchParams.time);
-        timeWhite = newMatchParams.time;
+        match.timeWhite = newMatchParams.time;
         setTimeB(newMatchParams.time);
-        timeBlack = newMatchParams.time;
+        match.timeBlack = newMatchParams.time;
         makeEmptyBoard(playerW,playerB);
         setMatchState(GameLogic.getWinner(match.board));
         match.moveNumber = 0;
@@ -78,7 +75,7 @@ export default function Game() {
             setMatchState("B")
         }
         setTimeW(Math.max(0,time));
-        timeWhite = Math.max(0,time);
+        match.timeWhite = Math.max(0,time);
     }
 
     function setTimeBlack(time: number) {
@@ -86,15 +83,15 @@ export default function Game() {
             setMatchState("W")
         }
         setTimeB(Math.max(0,time));
-        timeBlack = Math.max(0,time);
+        match.timeBlack = Math.max(0,time);
     }
 
     return <div className="game-div">
         <Menu setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
         <div className="game-info-div">
-            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeWhite} setTimeB={setTimeBlack} matchState={matchState} toPlay={match.toPlay}/>
+            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeWhite} setTimeB={setTimeBlack} matchState={matchState}/>
             <div className="board-div">
-                <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
+                <Board board={board} onPlay={playMove}/>
             </div>
         </div>
     </div>

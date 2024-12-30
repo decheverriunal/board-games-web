@@ -1,17 +1,17 @@
 "use client"
 
 import './Board.css';
+import { match } from "../utils/matchLogic";
 
-export default function Board({board, onPlay, isHumanPlaying}: {
+export default function Board({board, onPlay}: {
     board: string[][];
     onPlay: (row: number, col: number) => void;
-    isHumanPlaying: () => boolean;
 }) {
 
     const state = board.map((value,index) => {
         const row = value.map((val,ind) => {
             return <Square color={val} key={ind} cols={Math.max(value.length,board.length)} onSquareClick={() => {
-                if (isHumanPlaying() && board[index][ind] === " ") onPlay(index,ind)
+                if (match.humanToPlay && board[index][ind] === " ") onPlay(index,ind)
             }} />
         })
         return <div key={index} className="board-row">

@@ -12,7 +12,9 @@ export const match = {
     playerB: "nothuman",
     toPlay: "W",
     humanToPlay: true,
-    moveNumber: 0
+    moveNumber: 0,
+    timeWhite: 60000,
+    timeBlack: 60000
 }
 
 export function makeEmptyBoard(playerW: string, playerB: string) {
