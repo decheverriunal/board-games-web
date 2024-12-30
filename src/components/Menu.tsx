@@ -1,15 +1,13 @@
 "use client"
 
 import { useRef, useState } from "react";
+import { newMatchParams } from "../utils/matchLogic";
 import "./Menu.css"
 
-export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, setPlayer2, setTime }:{
-    changeRow: (num: number) => void;
-    changeCol: (num: number) => void;
+export default function Menu({ setNewBoard, setPlayer1, setPlayer2 }:{
     setNewBoard: () => void;
     setPlayer1: (player: string) => void;
     setPlayer2: (player: string) => void;
-    setTime: (time: number) => void;
 }) {
 
     const [hide, setHide] = useState(false);
@@ -21,11 +19,11 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
     }
 
     function handleRowChange(e: React.ChangeEvent<HTMLInputElement>) {
-        changeRow(parseInt(e.target.value));
+        newMatchParams.rows = parseInt(e.target.value);
     }
 
     function handleColChange(e: React.ChangeEvent<HTMLInputElement>) {
-        changeCol(parseInt(e.target.value));
+        newMatchParams.cols = parseInt(e.target.value);
     }
 
     function handlePlayer1Change(e: React.ChangeEvent<HTMLInputElement>) {
@@ -38,15 +36,17 @@ export default function Menu({ changeRow, changeCol, setNewBoard, setPlayer1, se
 
     function handleTimeChange(e: React.ChangeEvent<HTMLInputElement>) {
         customTime.current = parseInt(e.target.value) * 1000;
-        if (isCustomTime) setTime(customTime.current);
+        if (isCustomTime) {
+            newMatchParams.time = customTime.current;
+        } 
     }
 
     function handleTimeSelect(e: React.ChangeEvent<HTMLSelectElement>) {
         if (parseInt(e.target.value) === 0) {
-            setTime(customTime.current);
+            newMatchParams.time = customTime.current;
             setIsCustomTime(true);
         } else {
-            setTime(parseInt(e.target.value));
+            newMatchParams.time = parseInt(e.target.value);
             setIsCustomTime(false);
         }
     }

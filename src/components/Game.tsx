@@ -3,19 +3,15 @@
 import Menu from "./Menu";
 import Board from "./Board";
 import GameInfo from "./GameInfo";
-import { match, makeEmptyBoard, makePlay, getHumanToPlay } from "../utils/matchLogic";
+import { match, newMatchParams, makeEmptyBoard, makePlay, getHumanToPlay } from "../utils/matchLogic";
 import { useEffect, useState } from 'react';
 import GameLogic from "@/utils/gameLogic";
 import "./Game.css";
 
-let timeWhite = 0
-let timeBlack = 0
+let timeWhite = 0;
+let timeBlack = 0;
 
 export default function Game() {
-
-    // Numero de filas y columnas
-    const [row, setRow] = useState(2);
-    const [col, setCol] = useState(2);
 
     // Tablero
     const [board, setBoard] = useState(match.board);
@@ -27,15 +23,9 @@ export default function Game() {
     // Estado de la partida actual
     const [matchState, setMatchState] = useState("");
 
-    // Numero de movimientos que lleva la partida
-    const [moveNumber, setMoveNumber] = useState(0);
-
     // Tiempo de cada jugador
     const [timeW, setTimeW] = useState(0);
     const [timeB, setTimeB] = useState(0);
-
-    // Tiempo inicial de cada jugador
-    const [time, setTime] = useState(60000);
 
     useEffect(() => {
         if (!match.humanToPlay && matchState === "ongoing") {
@@ -57,7 +47,6 @@ export default function Game() {
                 if (matchState === "ongoing" && timeWhite > 0 && timeBlack > 0) {
                     makePlay(data[0],data[1]);
                     setMatchState(GameLogic.getWinner(match.board));
-                    setMoveNumber(m => m+1);
                     setBoard(match.board);
                 }
             })
@@ -66,13 +55,13 @@ export default function Game() {
 
     // Inicializa el tablero con los valores de col y row elegidos
     function setNewMatch() {
-        setTimeW(time);
-        timeWhite = time
-        setTimeB(time);
-        timeBlack = time
-        makeEmptyBoard(row,col,playerW,playerB);
+        setTimeW(newMatchParams.time);
+        timeWhite = newMatchParams.time;
+        setTimeB(newMatchParams.time);
+        timeBlack = newMatchParams.time;
+        makeEmptyBoard(playerW,playerB);
         setMatchState(GameLogic.getWinner(match.board));
-        setMoveNumber(0);
+        match.moveNumber = 0;
         setBoard(match.board);
     }
 
@@ -80,7 +69,6 @@ export default function Game() {
         if (matchState === "ongoing") {
             makePlay(row, col);
             setMatchState(GameLogic.getWinner(match.board));
-            setMoveNumber(m => m+1);
             setBoard(match.board);
         }
     }
@@ -102,9 +90,9 @@ export default function Game() {
     }
 
     return <div className="game-div">
-        <Menu changeRow={setRow} changeCol={setCol} setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB} setTime={setTime}/>
+        <Menu setNewBoard={setNewMatch} setPlayer1={setPlayerW} setPlayer2={setPlayerB}/>
         <div className="game-info-div">
-            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeWhite} setTimeB={setTimeBlack} matchState={matchState} toPlay={match.toPlay} moveNumber={moveNumber}/>
+            <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeWhite} setTimeB={setTimeBlack} matchState={matchState} toPlay={match.toPlay}/>
             <div className="board-div">
                 <Board board={board} onPlay={playMove} isHumanPlaying={getHumanToPlay} />
             </div>

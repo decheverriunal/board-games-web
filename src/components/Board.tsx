@@ -21,7 +21,6 @@ export default function Board({board, onPlay, isHumanPlaying}: {
 
     return <div className='board' style={{ 
         width: `min(60vw,90vh)`
-        //height: `calc(min(60vw,90vh)*${board.length}/${Math.max(board[0].length,board.length)})`
     }} >
         {state}
     </div>
