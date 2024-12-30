@@ -7,7 +7,7 @@ export default class RandomPlayer {
     }
 
     static compute(board: string[][], toPlay: string, time: number) {
-        for (let i = 0; i < 10000000; i++) {
+        for (let i = 0; i < 3000000000; i++) {
             
         }
         console.log(time);

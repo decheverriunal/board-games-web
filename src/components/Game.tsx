@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react';
 import GameLogic from "@/utils/gameLogic";
 import "./Game.css";
 
+let timeWhite = 0
+let timeBlack = 0
+
 export default function Game() {
 
     // Numero de filas y columnas
@@ -44,15 +47,19 @@ export default function Game() {
                 body: JSON.stringify({
                     board: match.board,
                     toPlay: match.toPlay,
-                    time: time
+                    time: match.toPlay === "W" ? timeWhite : timeBlack
                 })
             })
             .then((response) => response.json())
             .then((data) => {
-                makePlay(data[0],data[1]);
-                setMatchState(GameLogic.getWinner(match.board));
-                setMoveNumber(m => m+1);
-                setBoard(match.board);
+                console.log(timeWhite)
+                console.log(timeBlack)
+                if (matchState === "ongoing" && timeWhite > 0 && timeBlack > 0) {
+                    makePlay(data[0],data[1]);
+                    setMatchState(GameLogic.getWinner(match.board));
+                    setMoveNumber(m => m+1);
+                    setBoard(match.board);
+                }
             })
         }
     }, [board, matchState]);
@@ -60,7 +67,9 @@ export default function Game() {
     // Inicializa el tablero con los valores de col y row elegidos
     function setNewMatch() {
         setTimeW(time);
+        timeWhite = time
         setTimeB(time);
+        timeBlack = time
         makeEmptyBoard(row,col,playerW,playerB);
         setMatchState(GameLogic.getWinner(match.board));
         setMoveNumber(0);
@@ -81,6 +90,7 @@ export default function Game() {
             setMatchState("B")
         }
         setTimeW(Math.max(0,time));
+        timeWhite = Math.max(0,time);
     }
 
     function setTimeBlack(time: number) {
@@ -88,6 +98,7 @@ export default function Game() {
             setMatchState("W")
         }
         setTimeB(Math.max(0,time));
+        timeBlack = Math.max(0,time);
     }
 
     return <div className="game-div">
