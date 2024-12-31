@@ -4,7 +4,7 @@ import Menu from "./Menu";
 import Board from "./Board";
 import GameInfo from "./GameInfo";
 import { match, newMatchParams, makeEmptyBoard, makePlay } from "../utils/matchLogic";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import GameLogic from "@/utils/gameLogic";
 import "./Game.css";
 
@@ -23,32 +23,6 @@ export default function Game() {
     // Tiempo de cada jugador
     const [timeW, setTimeW] = useState(0);
     const [timeB, setTimeB] = useState(0);
-
-    useEffect(() => {
-        if (!match.humanToPlay && matchState === "ongoing") {
-            fetch("http://localhost:3001/compute",{
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    board: match.board,
-                    toPlay: match.toPlay,
-                    time: match.toPlay === "W" ? match.timeWhite : match.timeBlack
-                })
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(match.timeWhite)
-                console.log(match.timeBlack)
-                if (matchState === "ongoing" && match.timeWhite > 0 && match.timeBlack > 0 && !match.humanToPlay) {
-                    makePlay(data[0],data[1]);
-                    setMatchState(GameLogic.getWinner(match.board));
-                    setBoard(match.board);
-                }
-            })
-        }
-    }, [board, matchState]);
 
     // Inicializa el tablero con los valores de col y row elegidos
     function setNewMatch() {
@@ -91,7 +65,7 @@ export default function Game() {
         <div className="game-info-div">
             <GameInfo timeW={timeW} timeB={timeB} setTimeW={setTimeWhite} setTimeB={setTimeBlack} matchState={matchState}/>
             <div className="board-div">
-                <Board board={board} onPlay={playMove}/>
+                <Board board={board} onPlay={playMove} matchState={matchState}/>
             </div>
         </div>
     </div>

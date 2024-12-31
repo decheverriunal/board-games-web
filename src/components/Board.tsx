@@ -2,11 +2,37 @@
 
 import './Board.css';
 import { match } from "../utils/matchLogic";
+import { useEffect } from 'react';
 
-export default function Board({board, onPlay}: {
+export default function Board({board, onPlay, matchState}: {
     board: string[][];
     onPlay: (row: number, col: number) => void;
+    matchState: string;
 }) {
+
+    useEffect(() => {
+        if (!match.humanToPlay && matchState === "ongoing") {
+            fetch("http://localhost:3001/compute",{
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    board: match.board,
+                    toPlay: match.toPlay,
+                    time: match.toPlay === "W" ? match.timeWhite : match.timeBlack
+                })
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(match.timeWhite)
+                console.log(match.timeBlack)
+                if (match.timeWhite > 0 && match.timeBlack > 0 && !match.humanToPlay) {
+                    onPlay(data[0],data[1]);
+                }
+            })
+        }
+    }, [board, matchState, onPlay]);
 
     const state = board.map((value,index) => {
         const row = value.map((val,ind) => {
