@@ -25,8 +25,6 @@ export default function Board({board, onPlay, matchState}: {
             })
             .then((response) => response.json())
             .then((data) => {
-                console.log(match.timeWhite)
-                console.log(match.timeBlack)
                 if (match.timeWhite > 0 && match.timeBlack > 0 && !match.humanToPlay) {
                     onPlay(data[0],data[1]);
                 }

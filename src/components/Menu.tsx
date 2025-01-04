@@ -4,10 +4,8 @@ import { useRef, useState } from "react";
 import { newMatchParams } from "../utils/matchLogic";
 import "./Menu.css"
 
-export default function Menu({ setNewBoard, setPlayer1, setPlayer2 }:{
+export default function Menu({ setNewBoard }:{
     setNewBoard: () => void;
-    setPlayer1: (player: string) => void;
-    setPlayer2: (player: string) => void;
 }) {
 
     const [hide, setHide] = useState(false);
@@ -27,11 +25,11 @@ export default function Menu({ setNewBoard, setPlayer1, setPlayer2 }:{
     }
 
     function handlePlayer1Change(e: React.ChangeEvent<HTMLInputElement>) {
-        setPlayer1(e.target.value);
+        newMatchParams.playerW = e.target.value;
     }
 
     function handlePlayer2Change(e: React.ChangeEvent<HTMLInputElement>) {
-        setPlayer2(e.target.value);
+        newMatchParams.playerB = e.target.value;
     }
 
     function handleTimeChange(e: React.ChangeEvent<HTMLInputElement>) {

@@ -3,7 +3,9 @@ import GameLogic from "./gameLogic";
 export const newMatchParams = {
     rows: 1,
     cols: 1,
-    time: 60000
+    time: 60000,
+    playerW: "nothuman",
+    playerB: "nothuman"
 }
 
 export const match = {
@@ -17,12 +19,12 @@ export const match = {
     timeBlack: 60000
 }
 
-export function makeEmptyBoard(playerW: string, playerB: string) {
-    match.playerW = playerW;
-    match.playerB = playerB;
+export function makeEmptyBoard() {
+    match.playerW = newMatchParams.playerW;
+    match.playerB = newMatchParams.playerB;
     match.board = [];
     const boardRow = [];
-    for (let i = 0 ; i < newMatchParams.cols; i++) {
+    for (let i = 0; i < newMatchParams.cols; i++) {
         boardRow.push(" ");
     }
     for (let i = 0; i < newMatchParams.rows; i++) {
@@ -30,6 +32,7 @@ export function makeEmptyBoard(playerW: string, playerB: string) {
     }
     match.toPlay = "W";
     match.humanToPlay = (match.playerW === "human");
+    match.moveNumber = 0;
 }
 
 export function makePlay(row: number,col: number) {

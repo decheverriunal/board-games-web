@@ -1,51 +1,72 @@
 "use client"
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { match } from "../utils/matchLogic";
 
-export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState}:{
-    timeW: number;
-    timeB: number;
-    setTimeW: (num: number) => void;
-    setTimeB: (num: number) => void;
+export default function GameInfo({matchState,setMatchState}:{
     matchState: string;
+    setMatchState: (state: string) => void;
 }) {
     const timeStart = useRef(0);
     const timeAccumulatedW = useRef(0);
     const timeAccumulatedB = useRef(0);
     const playing = useRef("");
 
+    const [tW, setTW] = useState(60000);
+    const [tB, setTB] = useState(60000);
+
     useEffect(() => {
+        function setTimeWhite(time: number) {
+            if (time <= 0) {
+                setMatchState("B")
+            }
+            match.timeWhite = Math.max(0,time);
+        }
+    
+        function setTimeBlack(time: number) {
+            if (time <= 0) {
+                setMatchState("W")
+            }
+            match.timeBlack = Math.max(0,time);
+        }
         const timer = setInterval(() => {
             if (matchState === "ongoing" && match.moveNumber > 1 && match.toPlay === "W") {
                 if (match.toPlay === playing.current) {
-                    setTimeW(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
+                    setTimeWhite(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
+                    setTW(match.timeWhite);
                 } else {
                     timeStart.current = new Date().getTime();
-                    timeAccumulatedW.current = timeW;
+                    timeAccumulatedW.current = match.timeWhite;
                     playing.current = match.toPlay;
-                    setTimeW(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
+                    setTimeWhite(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
+                    setTW(match.timeWhite);
                 }
             } else if (matchState === "ongoing" && match.moveNumber > 1 && match.toPlay === "B") {
                 if (match.toPlay === playing.current) {
-                    setTimeB(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
+                    setTimeBlack(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
+                    setTB(match.timeBlack);
                 } else {
                     timeStart.current = new Date().getTime();
-                    timeAccumulatedB.current = timeB;
+                    timeAccumulatedB.current = match.timeBlack;
                     playing.current = match.toPlay;
-                    setTimeB(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
+                    setTimeBlack(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
+                    setTB(match.timeBlack);
                 }
             } else if (match.moveNumber === 1) {
                 playing.current = match.toPlay;
             } else {
                 timeAccumulatedW.current = 0
                 timeAccumulatedB.current = 0
-                clearInterval(timer);
+                setTW(match.timeWhite);
+                setTB(match.timeBlack);
+                if (matchState !== "ongoing") {
+                    clearInterval(timer);
+                }
             }
         }, 100);
 
         return () => clearInterval(timer);
-    }, [matchState, setTimeB, setTimeW, timeB, timeW])
+    }, [matchState, setMatchState])
 
     function displayWinner() {
         if (matchState === "W") {
@@ -77,9 +98,9 @@ export default function GameInfo({timeW,timeB,setTimeW,setTimeB,matchState}:{
 
     return <div className="info-div">
         <div className='info-white'></div>
-        <h1 className="info">{displayTime(timeW)}</h1>
+        <h1 className="info">{displayTime(tW)}</h1>
         <h1 className="info info-winner">{displayWinner()}</h1>
-        <h1 className="info">{displayTime(timeB)}</h1>
+        <h1 className="info">{displayTime(tB)}</h1>
         <div className='info-black'></div>
     </div>
 
