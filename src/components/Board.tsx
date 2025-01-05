@@ -2,7 +2,7 @@
 
 import './Board.css';
 import { match } from "../utils/matchLogic";
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function Board({board, onPlay, matchState}: {
     board: string[][];
@@ -10,8 +10,18 @@ export default function Board({board, onPlay, matchState}: {
     matchState: string;
 }) {
 
+    const controller = useRef<AbortController>()
+
     useEffect(() => {
         if (!match.humanToPlay && matchState === "ongoing") {
+
+            if (controller.current) {
+                controller.current.abort();
+            }
+
+            controller.current = new AbortController();
+            const signal = controller.current.signal;
+
             fetch("http://localhost:3001/compute",{
                 method: "POST",
                 headers: {
@@ -21,7 +31,8 @@ export default function Board({board, onPlay, matchState}: {
                     board: match.board,
                     toPlay: match.toPlay,
                     time: match.toPlay === "W" ? match.timeWhite : match.timeBlack
-                })
+                }),
+                signal
             })
             .then((response) => response.json())
             .then((data) => {
