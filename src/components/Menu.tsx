@@ -24,11 +24,11 @@ export default function Menu({ setNewBoard }:{
         newMatchParams.cols = parseInt(e.target.value);
     }
 
-    function handlePlayer1Change(e: React.ChangeEvent<HTMLInputElement>) {
+    function handlePlayer1Change(e: React.ChangeEvent<HTMLSelectElement>) {
         newMatchParams.playerW = e.target.value;
     }
 
-    function handlePlayer2Change(e: React.ChangeEvent<HTMLInputElement>) {
+    function handlePlayer2Change(e: React.ChangeEvent<HTMLSelectElement>) {
         newMatchParams.playerB = e.target.value;
     }
 
@@ -72,21 +72,17 @@ export default function Menu({ setNewBoard }:{
             onChange={handleColChange}
         />
         <label className="player-label">Player 1</label>
-        <input
-            type="text"
-            className="player-type-input"
-            id="player1" 
-            name="player1"
-            onChange={handlePlayer1Change}
-        />
+        <select className="player-type-input" name="player1" onChange={handlePlayer1Change}>
+            <option value={"human"}>human</option>
+            <option value={"bot1"}>bot 1 {"(port 3001)"}</option>
+            <option value={"bot2"}>bot 1 {"(port 3002)"}</option>
+        </select>
         <label className="player-label">Player 2</label>
-        <input
-            type="text"
-            className="player-type-input"
-            id="player2" 
-            name="player2"
-            onChange={handlePlayer2Change}
-        />
+        <select className="player-type-input" name="player2" onChange={handlePlayer2Change}>
+            <option value={"human"}>human</option>
+            <option value={"bot1"}>bot 1 {"(port 3001)"}</option>
+            <option value={"bot2"}>bot 1 {"(port 3002)"}</option>
+        </select>
         <label className="time-label">Time</label>
         <select className="time-input" name="time" onChange={handleTimeSelect}>
             <option value={60000}>1 minute</option>

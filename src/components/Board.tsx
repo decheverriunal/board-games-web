@@ -22,7 +22,13 @@ export default function Board({board, onPlay, matchState}: {
             controller.current = new AbortController();
             const signal = controller.current.signal;
 
-            fetch("http://localhost:3001/compute",{
+            let url = "http://localhost:3001/compute"
+            if ((match.toPlay === "W" && match.playerW === "bot1")
+                || (match.toPlay === "B" && match.playerB === "bot1")) url = "http://localhost:3001/compute"
+            else if ((match.toPlay === "W" && match.playerW === "bot2")
+                || (match.toPlay === "B" && match.playerB === "bot2")) url = "http://localhost:3002/compute"
+
+            fetch(url,{
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

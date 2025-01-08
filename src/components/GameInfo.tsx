@@ -21,6 +21,7 @@ export default function GameInfo({matchState,setMatchState}:{
                 setMatchState("B")
             }
             match.timeWhite = Math.max(0,time);
+            setTW(match.timeWhite);
         }
     
         function setTimeBlack(time: number) {
@@ -28,29 +29,26 @@ export default function GameInfo({matchState,setMatchState}:{
                 setMatchState("W")
             }
             match.timeBlack = Math.max(0,time);
+            setTB(match.timeBlack);
         }
         const timer = setInterval(() => {
             if (matchState === "ongoing" && match.moveNumber > 1 && match.toPlay === "W") {
                 if (match.toPlay === playing.current) {
                     setTimeWhite(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
-                    setTW(match.timeWhite);
                 } else {
                     timeStart.current = new Date().getTime();
                     timeAccumulatedW.current = match.timeWhite;
                     playing.current = match.toPlay;
                     setTimeWhite(-new Date().getTime() + timeStart.current + timeAccumulatedW.current);
-                    setTW(match.timeWhite);
                 }
             } else if (matchState === "ongoing" && match.moveNumber > 1 && match.toPlay === "B") {
                 if (match.toPlay === playing.current) {
                     setTimeBlack(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
-                    setTB(match.timeBlack);
                 } else {
                     timeStart.current = new Date().getTime();
                     timeAccumulatedB.current = match.timeBlack;
                     playing.current = match.toPlay;
                     setTimeBlack(-new Date().getTime() + timeStart.current + timeAccumulatedB.current);
-                    setTB(match.timeBlack);
                 }
             } else if (match.moveNumber === 1) {
                 playing.current = match.toPlay;
