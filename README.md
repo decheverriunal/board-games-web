@@ -18,3 +18,7 @@ Insert the command:
 ```bash
 npx tsx ./playerServer.ts
 ```
+
+Example bot runs by default on port 3001.
+
+Player type includes 2 options for bots to play. On port 3001 or port 3002.

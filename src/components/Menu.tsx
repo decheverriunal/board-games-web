@@ -81,7 +81,7 @@ export default function Menu({ setNewBoard }:{
         <select className="player-type-input" name="player2" onChange={handlePlayer2Change}>
             <option value={"human"}>human</option>
             <option value={"bot1"}>bot 1 {"(port 3001)"}</option>
-            <option value={"bot2"}>bot 1 {"(port 3002)"}</option>
+            <option value={"bot2"}>bot 2 {"(port 3002)"}</option>
         </select>
         <label className="time-label">Time</label>
         <select className="time-input" name="time" onChange={handleTimeSelect}>
